@@ -1,5 +1,6 @@
 const express   = require("express");
 const authRoutes = express.Router();
+// const passport = require('passport');
 
 const User  = require("../models/user");
 
@@ -12,48 +13,49 @@ authRoutes.get("/signup", (req, res, next) => {
   res.render("auth/signup");
 });
 
-authRoutes.get("/login", (req, res, next) => {
-  res.render("auth/login");
-});
 
 authRoutes.post("/signup", (req, res, next) => {
   const username = req.body.username;
   const password = req.body.password;
 
   if (username === "" || password === "") {
-      res.render("auth/signup", {
-        errorMessage: "Indicate a username and a password to sign up"
-      });
-      return;
-    }
-    User.findOne({ "username": username })
-    .then(user => {
-      console.log('user', user);
+    res.render("auth/signup", {
+      errorMessage: "Indicate a username and a password to sign up"
+    });
+    return;
+  }
+
+  User.findOne({ "username": username })
+  .then(user => {
     if (user !== null) {
-      res.render("auth/signup", {
-        errorMessage: "The username already exists"
+        res.render("auth/signup", {
+          errorMessage: "The username already exists"
+        });
+        return;
+      }
+  
+      const salt     = bcrypt.genSaltSync(bcryptSalt);
+      const hashPass = bcrypt.hashSync(password, salt);
+  
+      const newUser = User({
+        username,
+        password: hashPass
       });
-      return;
-    }
-    const salt     = bcrypt.genSaltSync(bcryptSalt);
-    const hashPass = bcrypt.hashSync(password, salt);
-    const checkPass = zxcvbn(password);
-    console.log('checkPass: ', checkPass);
   
-    const newUser  = User({
-      username,
-      password: hashPass
-    });
-  
-    newUser.save()
-    .then(user => {
-      res.redirect("/");
-    });
-});
+      newUser.save()
+      .then(user => {
+        res.redirect("/");
+      });
+  })
+  .catch(error => {
+      next(error);
+  });
 });
 
 //===================LOGIN==================TESTED
-
+authRoutes.get("/login", (req, res, next) => {
+  res.render("auth/login");
+});
 
 authRoutes.post("/login", (req, res, next) => {
   const username = req.body.username;
@@ -94,3 +96,4 @@ authRoutes.get("/logout", (req, res, next) => {
 });
 
 module.exports = authRoutes;
+

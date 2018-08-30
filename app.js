@@ -73,11 +73,15 @@ app.locals.title = 'Explorer Blog';
 const authRoutes = require('./routes/auth-routes');
 app.use('/', authRoutes);
 
-const siteRoutes = require('./routes/site-routes');
-app.use('/', siteRoutes);
+// const eventRoutes = require('./routes/event-route');
+// app.use('/', eventRoutes);
+
+const eventRoutes = require('./routes/event-route');
+app.use('/', eventRoutes);
 
 const index = require('./routes/index');
 app.use('/', index);
 
 
 module.exports = app;
+
