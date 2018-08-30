@@ -21,6 +21,9 @@
     <br><br>
 
     <button>Create account</button>
+    {{#if errorMessage}}
+  <div class="error-message">{{ errorMessage }}</div>
+{{/if}}
   </form>
 </body>
 </html>

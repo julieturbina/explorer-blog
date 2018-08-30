@@ -1,49 +1,59 @@
 const express   = require("express");
 const authRoutes = express.Router();
 
-
 const User  = require("../models/user");
 
 // BCrypy encrypt passwords
 const bcrypt         = require("bcrypt");
 const bcryptSalt     = 10;
 
+//===============SIGNUP=================== TESTED 
 authRoutes.get("/signup", (req, res, next) => {
   res.render("auth/signup");
-});
-
-authRoutes.post("/signup", (req, res, next) => {
-  const username = req.body.username;
-  const password = req.body.password;
-  const salt     = bcrypt.genSaltSync(bcryptSalt);
-  const hashPass = bcrypt.hashSync(password, salt);
-
-  if (username === "" || password === "") {
-    res.render("auth/signup", { message: "Enter username and password" });
-    return;
-  }
-    
-  User.findOne({ username })
-  .then(user => {
-    if (user !== null) {
-      res.render("auth/signup", { message: "The username already exists" });
-      return;
-    }
-
-  const newUser  = User({
-    username,
-    password: hashPass
-  });
-
-  newUser.save()
-  .then(user => {
-    res.redirect("/");
-  });
 });
 
 authRoutes.get("/login", (req, res, next) => {
   res.render("auth/login");
 });
+
+authRoutes.post("/signup", (req, res, next) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  if (username === "" || password === "") {
+      res.render("auth/signup", {
+        errorMessage: "Indicate a username and a password to sign up"
+      });
+      return;
+    }
+    User.findOne({ "username": username })
+    .then(user => {
+      console.log('user', user);
+    if (user !== null) {
+      res.render("auth/signup", {
+        errorMessage: "The username already exists"
+      });
+      return;
+    }
+    const salt     = bcrypt.genSaltSync(bcryptSalt);
+    const hashPass = bcrypt.hashSync(password, salt);
+    const checkPass = zxcvbn(password);
+    console.log('checkPass: ', checkPass);
+  
+    const newUser  = User({
+      username,
+      password: hashPass
+    });
+  
+    newUser.save()
+    .then(user => {
+      res.redirect("/");
+    });
+});
+});
+
+//===================LOGIN==================TESTED
+
 
 authRoutes.post("/login", (req, res, next) => {
   const username = req.body.username;
@@ -75,11 +85,12 @@ authRoutes.post("/login", (req, res, next) => {
   });
 });
 
+//=======================LOGOUT============TESTED 
 authRoutes.get("/logout", (req, res, next) => {
   req.session.destroy((err) => {
     // cannot access session here
     res.redirect("/login");
   });
 });
-});
+
 module.exports = authRoutes;

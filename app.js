@@ -71,9 +71,9 @@ app.locals.title = 'Explorer Blog';
 
 //Routes
 const authRoutes = require('./routes/auth-routes');
-const siteRoutes = require('./routes/site-routes');
-
 app.use('/', authRoutes);
+
+const siteRoutes = require('./routes/site-routes');
 app.use('/', siteRoutes);
 
 const index = require('./routes/index');
