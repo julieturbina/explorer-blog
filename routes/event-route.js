@@ -4,14 +4,12 @@ const Event = require("../models/event");
 const User  = require("../models/user");
 const Blog = require('../models/blog');
 
-//=========Get event page===============for testing!
+//=========Get event page========TESTED - DON'T TOUCH!
+
 router.get('/event', (req, res, next) => {
-  if (!req.user){
-    res.redirect('/event');
-  }
   Event.find()
     .then(event => {
-      // console.log(procedures);
+      console.log(event);
       res.render("event", { event });
     })
     .catch(error => {
@@ -19,9 +17,39 @@ router.get('/event', (req, res, next) => {
     });
 });
 
-//=========Event detail view===============for testing!
+// //=========Event detail view===============for testing!
 
+router.get('/event/:id', (req, res, next) => {
+  let eventId = req.params.id;
+  Event.findOne({'_id': eventId})
+    .then(event => {
+      res.render("event-detail", { event });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+});
+//=====Get event-add page ===========TESTED - DON'T TOUCH
 
+router.get('/event-add', (req, res, next) => {
+  res.render("event-add");
+});
+
+//========= POST new procudures - add to database ====for testing
+
+router.post('/event-add', (req, res, next) => {
+  const { title, detail, location, review } = req.body;
+  const newEvent = new Event({ title, detail, location, review});
+  newEvent.save()
+  .then((event) => {
+    res.redirect('/event-add');
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+});
+
+/////===COMMENTED FOR TESTING===========
 
   // router.get('/event/add', (req, res, next) => {
   //   res.render("event-add");
