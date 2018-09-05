@@ -1,14 +1,18 @@
-<h1>Edit Existing procedures</h1>
-<form action="/procedure-edit/{{procedure._id}}" method="post">
-  <label for="">Procedure:</label>
-  <input type="text" name="title" value="{{procedure.title}}"">
+<form action="/event/edit?event_id={{event._id}}" method="post">
+  <label for="">Title:</label>
+  <input type="text" name="title" value="{{event.title}}"">
 
-  <label for="">Provider:</label>
-  <input type="text" name="provider" value="{{procedure.provider}}"">
+  <label for="">Event Details:</label>
+  <input type="text" name="detail" value="{{event.detail}}"">
+
+  <label for="">Location:</label>
+  <input type="text" name="location" value="{{event.location}}"">
 
   <label for="">Review:</label>
-  <input type="string" name="review" value="{{procedure.review}}"">
+  <input type="number" name="review" value="{{event.review}}"">
 
   <button type="submit">EDIT</button>
 </form>
+
+ 
 

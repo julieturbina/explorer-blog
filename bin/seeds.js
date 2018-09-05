@@ -11,18 +11,21 @@ const event = [
     detail: "Couture and Ready to Wear",
     location: "Miami",
     review: "By Invitation Only",
+    image: "",
   },
   {
     title: "Trunk Shows",
     detail: "Ready to Wear",
     location: "Miami",
     review: "No Invitation Necessary",
+    image: "",
   },
   {
     title: "Yoga Sessions",
     detail: "Health and Wellness",
     location: "Miami",
     review: "Free",
+    image: "",
   },
  
   {
@@ -30,13 +33,14 @@ const event = [
     detail: "Entertainment",
     location: "Miami",
     review: "Entrance Fee",
-
+    image: "",
   },
   {
     title: "Skin Care",
     detail: " Beauty",
     location: "Miami",
     review: "Fee and Reservation required",
+    image: "",
   },
  
 ];

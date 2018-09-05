@@ -1,6 +1,7 @@
 require('dotenv').config();
 const session    = require("express-session");
 const MongoStore = require("connect-mongo")(session);
+var cors = require('cors');
 
 const bodyParser   = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -32,6 +33,7 @@ const app_name = require('./package.json').name;
 const debug = require('debug')(`${app_name}:${path.basename(__filename).split('.')[0]}`);
 
 const app = express();
+app.use(cors());
 
 // Middleware Setup
 app.use(logger('dev'));
@@ -73,11 +75,15 @@ app.locals.title = 'Explorer Blog';
 const authRoutes = require('./routes/auth-routes');
 app.use('/', authRoutes);
 
-// const eventRoutes = require('./routes/event-route');
-// app.use('/', eventRoutes);
 
+//==========COMMENTED TO TEST EVENTROUTE BELOW============
 const eventRoutes = require('./routes/event-route');
 app.use('/', eventRoutes);
+
+// const eventApi  = require('./routes/event-api');
+// app.use('/api', eventApi);
+
+
 
 const index = require('./routes/index');
 app.use('/', index);

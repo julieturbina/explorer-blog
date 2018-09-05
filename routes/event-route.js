@@ -4,12 +4,111 @@ const Event = require("../models/event");
 const User  = require("../models/user");
 const Blog = require('../models/blog');
 
-//=========Get event page========TESTED - DON'T TOUCH!
+const Events = require('../models/event');
+
+/* GET EVENT LIST. */
+// router.get('/event', (req, res, next) => {
+//   Event.find(eventList)
+//   .then(eventList => {
+//     if (err) {
+//       res.json(err);
+//       return;
+//     }
+//     res.json(eventList);
+//   })
+//   .catch(error => next(error));
+// });
+
+// /* CREATE A NEW EVENT. */
+// router.post('/events', (req, res, next) => {
+//   const theEvent = new Event({
+//     name: req.body.name,
+//     detail: req.body.detail,
+//     location: req.body.location,
+//     review: req.body.review,
+//     image: req.body.image || ''
+//   });
+
+//   theEvent.save()
+//   .then(theEvent => {
+//     res.json({
+//       message: 'A New Event has been created!',
+//       id: theEvent._id
+//     });
+//   })
+//   .catch(error => next(error));
+// });
+
+//GET A SINGLE EVENT=========
+
+// router.get('/event/:id', (req, res, next) => {
+//   if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+//     res.status(400).json({ message: 'Specified id is not valid' });
+//     return;
+//   }
+
+//   Event.findById(req.params.id)
+//   .then(theEvent => {
+//       res.json(theEvent);
+//   })
+//   .catch(error => next(error));
+// });
+
+//EDIT AN EVENT =========
+  
+// router.put('/events/:id', (req, res, next) => {
+//   if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+//     res.status(400).json({ message: 'Specified id is not valid' });
+//     return;
+//   }
+
+//   const updates = {
+//     name: req.body.name,
+//     detail: req.body.detail,
+//     location: req.body.location,
+//     review: req.body.review,
+//     image: req.body.image || ''
+//   };
+
+//    Event.findByIdAndUpdate(req.params.id, updates)
+//   .then(event => {
+//     res.json({
+//       message: 'Event had been updated successfully'
+//     });
+//   }) 
+//   .catch(error => next(error));     
+// });
+
+// /* DELETE AN EVENT */
+// router.delete('/events/:id', (req, res, next) => {
+//   if(!mongoose.Types.ObjectId.isValid(req.params.id)) {
+//     res.status(400).json({ message: 'Specified id is not valid' });
+//     return;
+//   }
+
+//   Event.remove({ _id: req.params.id })
+//   .then(message => {
+//     return res.json({
+//       message: 'Event has been removed!'
+//     });
+//   })
+//   .catch(error => next(error));
+// });
+
+// module.exports = router;
+
+
+
+
+
+//======ALL COMMENTED BELOW TO TEST ABOVE ONLY=====UNCOMMENT BELOW
+
+//=GET EVENT PAGE(LIST ALL EVENTS) = TESTED - DON'T TOUCH!
 
 router.get('/event', (req, res, next) => {
   Event.find()
     .then(event => {
-      console.log(event);
+      // console.log(event);
       res.render("event", { event });
     })
     .catch(error => {
@@ -17,8 +116,7 @@ router.get('/event', (req, res, next) => {
     });
 });
 
-// //=========Event detail view===============for testing!
-
+//===GET EVENT DETAIL========TESTED = DON'T TOUCH!
 router.get('/event/:id', (req, res, next) => {
   let eventId = req.params.id;
   Event.findOne({'_id': eventId})
@@ -29,13 +127,13 @@ router.get('/event/:id', (req, res, next) => {
       console.log(error);
     });
 });
-//=====Get event-add page ===========TESTED - DON'T TOUCH
+//===GET EVENT-ADD PAGE===TESTED - DON'T TOUCH!
 
 router.get('/event-add', (req, res, next) => {
   res.render("event-add");
 });
 
-//========= POST new procudures - add to database ====for testing
+// //=== POST NEW EVENTS(add to database) ====TESTED - DON'T TOUCH!
 
 router.post('/event-add', (req, res, next) => {
   const { title, detail, location, review } = req.body;
@@ -49,97 +147,54 @@ router.post('/event-add', (req, res, next) => {
   });
 });
 
-/////===COMMENTED FOR TESTING===========
+//===COMMENTED ABOVE TO TEST ABOVE ONLY===DO NOT TOUCH ABOVE====UNCOMMENT ABOVE
 
-  // router.get('/event/add', (req, res, next) => {
-  //   res.render("event-add");
-  // });
-  
-  
-  // router.get('/event', (req, res, next) => {
-  //   Event.find()
-  //     .then(event => {
-  //       console.log(event);
-  //       res.render("event", { event });
-  //     })
-  //     .catch(error => {
-  //       console.log(error);
-  //     });
-  // });
-  
-  // router.get('/event/:id', (req, res, next) => {
-  //   let eventId = req.params.id;
-  //   if (!/^[0-9a-fA-F]{24}$/.test(eventId)) {
-  //     return res.status(404).render('not-found');
-  //   }
-  //   Event.findOne({'_id': eventId})
-  //     .populate('location')
-  //     .then(event => {
-  //       if (!event) {
-  //           return res.status(404).render('not-found');
-  //       }
-  //       res.render("event-detail", { event });
-  //     })
-  //     .catch(next);
-  // });
-  
-  // router.post('/event/add', (req, res, next) => {
-  //   const { title, detail, location, review } = req.body;
-  //   const newEvent = new Event({ title, detail, location, review });
-  //   newEvent.save()
-  //   .then((event) => {
-  //     res.redirect('/event');
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
-  // });
-  
-  // router.get('/event/edit', (req, res, next) => {
-  //   Event.findOne({_id: req.query.event_id})
-  //   .then((event) => {
-  //     res.render("event-edit", {event});
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
-  // });
-  
-  // router.post('/event/edit', (req, res, next) => {
-  //   const { title, detail, location, review } = req.body;
-  //   Event.update({_id: req.query.event_id}, { $set: {title, detail, location, review }}, { new: true })
-  //   .then((event) => {
-  //     res.redirect('/event');
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
-  // });
-  
-  // router.get('/authors/add', (req, res, next) => {
-  //   res.render("author-add");
-  // });
-  
-  // router.post('/authors/add', (req, res, next) => {
-  //   const { name, lastName, nationality, birthday, pictureUrl } = req.body;
-  //   const newAuthor = new Author({ name, lastName, nationality, birthday, pictureUrl});
-  //   newAuthor.save()
-  //   .then((book) => {
-  //     res.redirect('/books');
-  //   })
-  //   .catch((error) => {
-  //     console.log(error);
-  //   });
-  // });
-  
-  // router.post('/reviews/add', (req, res, next) => {
-  //   const { user, comments } = req.body;
-  //   Event.update({ _id: req.query.event_id }, { $push: { reviews: { user, comments }}})
-  //   .then(event => {
-  //     res.redirect('/event/' + req.query.event_id);
-  //   })
-  //   .catch((error) => {
-  //     console.log(error); 
-  //   });
-  // });
+
+
+
+
+
+
+/////===COMMENTED FOR TESTING BELOW - MAY DELETE===========
+
+
+//===EDIT A SINGLE EVENT=======For testing !!!!======
+
+router.get('/event-edit', (req, res, next) => {
+res.render("event-edit");
+
+// router.get('/event/edit', (req, res, next) => {
+//   Event.findOne({_id: req.query.event_id})
+//   .then((event) => {
+//   res.render("event-edit", {event});
+// })
+// .catch((error) => {
+//   console.log(error);
+// });
+// });
+
+router.get('/event/edit/:id', (req, res, next) => {
+Event.findById({_id: req.params.id})
+.then((procedure) => {
+  res.render("procedure-edit", {procedure});
+})
+.catch((error) => {
+  console.log(error);
+});
+});
+
+//edit an event
+
+router.post('/event/edit', (req, res, next) => {
+  const { title, detail, location, review } = req.body;
+  Event.update({_id: req.query.event_id}, { $set: { title, detail, location, review }})
+  .then((event) => {
+    res.redirect('/event');
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+});
+});
+
 module.exports = router;

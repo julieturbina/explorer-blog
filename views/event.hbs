@@ -5,29 +5,16 @@
 <h1>Events</h1>
 {{#each event}}
     <p><a href="event/{{this._id}}">{{this.title}}</a></p>
+    <a href="/event/edit?event_id={{this._id}}" class="edit-button">EDIT</a>
 {{/each}}
 
 
-{{!-- 
-<h1>Add a new event</h1>
 
-<form action="/event-add" method="post">
-  <label for="">Title:</label>
-  <input type="text" name="title">
-
-  <label for="">Detail:</label>
-  <input type="text" name="detail">
-
-  <label for="">Location:</label>
-  <input type="text" name="location">
-
-  <label for="">Review:</label>
-  <input type="text" name="review">
-
-  <button type="submit">Add Event</button>
-</form>
-
-<br>
 <div>
-             <button class="logout"><a href="/logout">Logout</a></button>
-   </div> --}}
+             <button class="event"><a href="/event-add">Go To Event Add Page</a></button>
+</div>
+<hr>
+
+<div>
+             <button class="event"><a href="/">Go To Index Page</a></button>
+</div>
